@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>OBJ 01 // LOCKDOWN CITY</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="hud">
+    <div class="hud-top">
+      <div class="left">
+        <span>OP: K.LOCKE</span>
+        <span>BLACKBIRD-7</span>
+      </div>
+      <div class="center recording">REC</div>
+      <div class="right">
+        <span>OBJ 01 / 05</span>
+        <span>T+00:18:42</span>
+      </div>
+    </div>
+
+    <div class="hud-body">
+      <aside class="sidebar">
+        <div class="panel">
+          <div class="panel-title">VITALS</div>
+          <div class="vital"><span>HR</span><span class="v">78 BPM</span></div>
+          <div class="vital"><span>O₂</span><span class="v">96%</span></div>
+          <div class="vital"><span>INTEGRITY</span><span class="v">100%</span></div>
+          <svg class="ecg" viewBox="0 0 200 30" preserveAspectRatio="none">
+            <path class="ecg-line" d="M0,15 L40,15 L48,5 L56,25 L64,15 L200,15" />
+          </svg>
+        </div>
+        <div class="panel">
+          <div class="panel-title">EQUIP</div>
+          <div class="vital"><span>SIDEARM</span><span class="v">M9</span></div>
+          <div class="vital"><span>AMMO</span><span class="v">15/45</span></div>
+          <div class="vital"><span>RADIO</span><span class="v">87.4MHZ</span></div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="panel objective">
+          <div class="panel-title">OBJECTIVE 01 / 05 — INFILTRATE PERIMETER</div>
+          <h1>봉쇄선 진입</h1>
+          <div class="intel">
+            <p><span class="label">INTEL</span>맨해튼-브루클린을 잇는 모든 다리는 폐쇄됨. 단 하나, 군 보급용 게이트만 운용 중.</p>
+            <p><span class="label">FIELD</span>강 건너편으로 조명탑이 보인다. 검문소 활성, 경비 교대 12분 후.</p>
+          </div>
+          <div class="query">
+            <span class="label">QUERY ▸</span> 잠입 가능한 단일 게이트는?
+          </div>
+        </div>
+
+        <ul class="choices">
+          <li><button class="choice" data-i="0"><span class="key">[1]</span> 윌리엄스버그 다리 게이트</button></li>
+          <li><button class="choice" data-i="1"><span class="key">[2]</span> 맨해튼 다리 게이트</button></li>
+          <li><button class="choice" data-i="2"><span class="key">[3]</span> 브루클린 다리 보급 게이트</button></li>
+          <li><button class="choice" data-i="3"><span class="key">[4]</span> 베라자노 내로스 터널</button></li>
+        </ul>
+
+        <div class="actions">
+          <a href="hint1.html" class="btn-hint">? HINT</a>
+          <button class="btn" id="submit">CONFIRM ▸</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+      </main>
+    </div>
+
+    <div class="hud-bottom">
+      <span>SIGNAL: SECURE</span>
+      <span class="comms">▸ STANDBY FOR INSTRUCTIONS</span>
+      <span>ENC: AES-256</span>
+    </div>
+  </div>
+
+  <script>
+    const correct = 2;
+    let selected = null;
+    function select(i) {
+      document.querySelectorAll('.choice').forEach(c => c.classList.remove('selected'));
+      const t = document.querySelector(`.choice[data-i="${i}"]`);
+      if (t) { t.classList.add('selected'); selected = i; }
+    }
+    document.querySelectorAll('.choice').forEach(el => {
+      el.addEventListener('click', () => select(parseInt(el.dataset.i, 10)));
+    });
+    document.addEventListener('keydown', e => {
+      if (['1','2','3','4'].includes(e.key)) select(parseInt(e.key, 10) - 1);
+      if (e.key === 'Enter') document.getElementById('submit').click();
+    });
+    document.getElementById('submit').addEventListener('click', () => {
+      const fb = document.getElementById('feedback');
+      if (selected === correct) {
+        fb.textContent = '▸ TARGET CONFIRMED // ROUTING TO NEXT OBJECTIVE';
+        fb.className = 'feedback success';
+        document.body.classList.add('ok');
+        setTimeout(() => location.href = 'q2.html', 900);
+      } else {
+        fb.textContent = '✕ NEGATIVE // RECALCULATE';
+        fb.className = 'feedback error';
+        document.body.classList.add('alert');
+        const m = document.querySelector('.main');
+        m.classList.add('shake');
+        setTimeout(() => { m.classList.remove('shake'); document.body.classList.remove('alert'); }, 500);
+      }
+    });
+  </script>
+  <script src="child-bridge.js"></script>
+</body>
+</html>

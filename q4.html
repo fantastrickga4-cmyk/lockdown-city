@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>OBJ 04 // LOCKDOWN CITY</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="hud">
+    <div class="hud-top">
+      <div class="left">
+        <span>OP: K.LOCKE</span>
+        <span>BLACKBIRD-7</span>
+      </div>
+      <div class="center recording">REC // DECRYPT</div>
+      <div class="right">
+        <span>OBJ 04 / 05</span>
+        <span>T+05:48:09</span>
+      </div>
+    </div>
+
+    <div class="hud-body">
+      <aside class="sidebar">
+        <div class="panel">
+          <div class="panel-title">VITALS</div>
+          <div class="vital"><span>HR</span><span class="v">88 BPM</span></div>
+          <div class="vital warn"><span>O₂</span><span class="v">93%</span></div>
+          <div class="vital warn"><span>INTEGRITY</span><span class="v">84%</span></div>
+          <svg class="ecg" viewBox="0 0 200 30" preserveAspectRatio="none">
+            <path class="ecg-line" d="M0,15 L40,15 L48,5 L56,25 L64,15 L200,15" />
+          </svg>
+        </div>
+        <div class="panel">
+          <div class="panel-title">DEVICE</div>
+          <div class="vital"><span>MODEL</span><span class="v">AN/PRC-152</span></div>
+          <div class="vital"><span>LOCK</span><span class="v" style="color: var(--crit);">PIN 4D</span></div>
+          <div class="vital"><span>BATTERY</span><span class="v">22%</span></div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="panel objective">
+          <div class="panel-title">OBJECTIVE 04 / 05 — DECRYPT COMMS DEVICE</div>
+          <h1>형의 주파수</h1>
+          <div class="intel">
+            <p><span class="label">INTEL</span>지하철 출구. 형이 두고 간 군용 무전기. 4자리 PIN 잠금.</p>
+            <p><span class="label">RECALL</span>형의 마지막 메시지 — <span style="color: var(--warn);">"3월 14일. 오늘이 지나면, 이 날짜를 기억해."</span></p>
+            <p><span class="label">FIELD</span>그날 이후 형의 신호는 끊겼다.</p>
+          </div>
+          <div class="query">
+            <span class="label">QUERY ▸</span> PIN 입력 (MMDD, 4자리)
+          </div>
+        </div>
+
+        <input type="text" id="answer" autocomplete="off" placeholder="0000" maxlength="4" inputmode="numeric" />
+
+        <div class="actions">
+          <a href="hint4.html" class="btn-hint">? HINT</a>
+          <button class="btn" id="submit">UNLOCK ▸</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+      </main>
+    </div>
+
+    <div class="hud-bottom">
+      <span>SIGNAL: ENCRYPTED</span>
+      <span class="comms">▸ AWAITING PIN // 4-DIGIT</span>
+      <span>ENC: AES-256</span>
+    </div>
+  </div>
+
+  <script>
+    const accepted = ['0314', '314'];
+    const input = document.getElementById('answer');
+    function go() {
+      const fb = document.getElementById('feedback');
+      const v = input.value.trim();
+      if (accepted.includes(v)) {
+        fb.textContent = '▸ UNLOCK OK // COORDINATES ACQUIRED';
+        fb.className = 'feedback success';
+        document.body.classList.add('ok');
+        setTimeout(() => location.href = 'q5.html', 900);
+      } else {
+        fb.textContent = '✕ INVALID PIN';
+        fb.className = 'feedback error';
+        document.body.classList.add('alert');
+        const m = document.querySelector('.main');
+        m.classList.add('shake');
+        setTimeout(() => { m.classList.remove('shake'); document.body.classList.remove('alert'); }, 500);
+      }
+    }
+    document.getElementById('submit').addEventListener('click', go);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+    input.focus();
+  </script>
+  <script src="child-bridge.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>OBJ 02 // LOCKDOWN CITY</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="hud">
+    <div class="hud-top">
+      <div class="left">
+        <span>OP: K.LOCKE</span>
+        <span>BLACKBIRD-7</span>
+      </div>
+      <div class="center recording">REC</div>
+      <div class="right">
+        <span>OBJ 02 / 05</span>
+        <span>T+02:14:33</span>
+      </div>
+    </div>
+
+    <div class="hud-body">
+      <aside class="sidebar">
+        <div class="panel">
+          <div class="panel-title">VITALS</div>
+          <div class="vital"><span>HR</span><span class="v">82 BPM</span></div>
+          <div class="vital"><span>O₂</span><span class="v">95%</span></div>
+          <div class="vital"><span>INTEGRITY</span><span class="v">98%</span></div>
+          <svg class="ecg" viewBox="0 0 200 30" preserveAspectRatio="none">
+            <path class="ecg-line" d="M0,15 L40,15 L48,5 L56,25 L64,15 L200,15" />
+          </svg>
+        </div>
+        <div class="panel">
+          <div class="panel-title">SCAN</div>
+          <div class="vital"><span>STRUCTURE</span><span class="v">DERELICT</span></div>
+          <div class="vital"><span>HEAT SIG</span><span class="v">NONE</span></div>
+          <div class="vital"><span>ARTIFACT</span><span class="v">DIARY</span></div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="panel objective">
+          <div class="panel-title">OBJECTIVE 02 / 05 — RECON TARGET RESIDENCE</div>
+          <h1>남겨진 일기</h1>
+          <div class="intel">
+            <p><span class="label">INTEL</span>형의 마지막 거주지. 책장 붕괴, 창문 합판으로 차단. 책상 위에 펼쳐진 일기.</p>
+            <p><span class="label">FIELD</span>마지막 페이지에 형의 글씨가 흐려져 있다 —</p>
+            <p style="color: var(--warn); font-style: italic; margin-left: 20px;">"동생아, 이 바이러스는 사람을 죽이지 않는다.<br/>다만 사람의 ______을(를) 천천히 죽일 뿐이다."</p>
+          </div>
+          <div class="query">
+            <span class="label">QUERY ▸</span> 빈칸을 한 단어로 식별하시오.
+          </div>
+        </div>
+
+        <input type="text" id="answer" autocomplete="off" placeholder="INPUT WORD..." />
+
+        <div class="actions">
+          <a href="hint2.html" class="btn-hint">? HINT</a>
+          <button class="btn" id="submit">SUBMIT ▸</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+      </main>
+    </div>
+
+    <div class="hud-bottom">
+      <span>SIGNAL: SECURE</span>
+      <span class="comms">▸ ARTIFACT LOGGED // ANALYZING</span>
+      <span>ENC: AES-256</span>
+    </div>
+  </div>
+
+  <script>
+    const accepted = ['기억', '영혼', '마음', '인간성'];
+    const input = document.getElementById('answer');
+    function go() {
+      const fb = document.getElementById('feedback');
+      const v = input.value.trim();
+      if (accepted.includes(v)) {
+        fb.textContent = '▸ MATCH FOUND // PROCEEDING';
+        fb.className = 'feedback success';
+        document.body.classList.add('ok');
+        setTimeout(() => location.href = 'q3.html', 900);
+      } else {
+        fb.textContent = '✕ NO MATCH // RETRY';
+        fb.className = 'feedback error';
+        document.body.classList.add('alert');
+        const m = document.querySelector('.main');
+        m.classList.add('shake');
+        setTimeout(() => { m.classList.remove('shake'); document.body.classList.remove('alert'); }, 500);
+      }
+    }
+    document.getElementById('submit').addEventListener('click', go);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+    input.focus();
+  </script>
+  <script src="child-bridge.js"></script>
+</body>
+</html>
